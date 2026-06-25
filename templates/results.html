@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scan Results — Tracker Expose</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><a href="/">Tracker Expose</a></h1>
+        </header>
+
+        <div class="results-header">
+            <div class="score-badge" style="background-color: {{ score.color }}">
+                <span class="grade">{{ score.grade }}</span>
+            </div>
+            <div class="score-info">
+                <h2>{{ score.label }}</h2>
+                <p class="scanned-url">{{ url }}</p>
+                <p class="stats">{{ total_domains }} third-party domains found · {{ total_trackers }} known trackers</p>
+            </div>
+        </div>
+
+        {% set category_order = ["Fingerprinting", "Ad Networks", "Social Trackers", "Analytics", "CDNs", "Unknown"] %}
+        {% set category_icons = {
+            "Fingerprinting": "🔍",
+            "Ad Networks": "📢",
+            "Social Trackers": "👥",
+            "Analytics": "📊",
+            "CDNs": "🌐",
+            "Unknown": "❓"
+        } %}
+
+        {% for category in category_order %}
+            {% if category in categorized %}
+            <div class="category-section">
+                <div class="category-header severity-{{ categorized[category][0].severity }}">
+                    <span class="category-icon">{{ category_icons.get(category, "❓") }}</span>
+                    <h3>{{ category }}</h3>
+                    <span class="count">{{ categorized[category] | length }}</span>
+                </div>
+                <div class="domain-list">
+                    {% for entry in categorized[category] %}
+                    <div class="domain-entry {% if entry.blocked %}blocked{% endif %}">
+                        <span class="domain-name">{{ entry.domain }}</span>
+                        {% if entry.blocked %}
+                        <span class="badge badge-blocked">Blocked by filter list</span>
+                        {% else %}
+                        <span class="badge badge-third-party">Third-party</span>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+        {% endfor %}
+
+        <div class="actions">
+            <a href="/" class="btn">Scan Another URL</a>
+        </div>
+
+        <footer>
+            <p>Built by <a href="https://github.com/EmberGuild-Labs">EmberGuild Labs</a> · Companion tool to <a href="https://github.com/EmberGuild-Labs/oryn">Project Oryn</a></p>
+        </footer>
+    </div>
+    <script src="/static/main.js"></script>
+</body>
+</html>

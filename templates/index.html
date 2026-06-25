@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tracker Expose</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Tracker Expose</h1>
+            <p class="subtitle">See what's really tracking you on any webpage</p>
+        </header>
+
+        <form action="/scan" method="POST" class="scan-form" id="scan-form">
+            <div class="input-group">
+                <input
+                    type="text"
+                    name="url"
+                    placeholder="Enter a URL to scan (e.g. example.com)"
+                    required
+                    autocomplete="url"
+                    id="url-input"
+                >
+                <button type="submit" id="scan-btn">Scan</button>
+            </div>
+            {% if error %}
+            <p class="error">{{ error }}</p>
+            {% endif %}
+        </form>
+
+        <div class="info-box">
+            <h3>How it works</h3>
+            <ol>
+                <li>We fetch the page server-side — your IP stays hidden from the target</li>
+                <li>All scripts, images, iframes, and links are parsed for third-party domains</li>
+                <li>Each domain is checked against EasyPrivacy and EasyList blocklists</li>
+                <li>Results are categorized and graded by severity</li>
+            </ol>
+        </div>
+
+        <footer>
+            <p>Built by <a href="https://github.com/EmberGuild-Labs">EmberGuild Labs</a> · Companion tool to <a href="https://github.com/EmberGuild-Labs/oryn">Project Oryn</a></p>
+        </footer>
+    </div>
+    <script src="/static/main.js"></script>
+</body>
+</html>
