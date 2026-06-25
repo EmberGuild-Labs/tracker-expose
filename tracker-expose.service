@@ -1,0 +1,14 @@
+[Unit]
+Description=Tracker Expose
+After=network.target
+
+[Service]
+User=pi
+WorkingDirectory=/var/www/trackers
+ExecStart=/var/www/trackers/venv/bin/gunicorn -w 2 -b 127.0.0.1:3000 app:app
+Restart=always
+RestartSec=5
+Environment=PORT=3000
+
+[Install]
+WantedBy=multi-user.target
